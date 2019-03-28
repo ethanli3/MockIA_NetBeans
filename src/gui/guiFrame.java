@@ -531,6 +531,10 @@ public class guiFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Updates all the text fields 
+     * @param expenditures ArrayList of expenditures
+     */
     private void updateTextFields(ArrayList<Expenditures> expenditures)
     {
         try
@@ -622,6 +626,11 @@ public class guiFrame extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Updates all the GUI when the submit button is pressed using all the info
+     * on the GUI
+     * @param evt When the submit button is pressed
+     */
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         // TODO add your handling code here:
         try
@@ -637,7 +646,8 @@ public class guiFrame extends javax.swing.JFrame {
             String month = "";
             String year = "";
             
-            double spending = Double.parseDouble(inputSpendingTextField.getText());
+            double spending = 
+                    Double.parseDouble(inputSpendingTextField.getText());
             String type = spendingBox.getSelectedItem().toString();
             
             if (spendingDayBox.getSelectedItem().toString().equals("Today"))
@@ -712,11 +722,13 @@ public class guiFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
-            JOptionPane.showMessageDialog(this, "Please Enter a Valid Number", "ERROR", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please Enter a Valid Number", 
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_submitActionPerformed
 
     /**
+     * GUI Main
      * @param args the command line arguments
      */
     public static void main(String args[]) {

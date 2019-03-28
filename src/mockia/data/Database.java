@@ -11,6 +11,11 @@ import java.sql.ResultSet;
 
 public class Database {
 
+    /**
+     * Method that connects to the database
+     * @return The connection to the database
+     * @throws Exception Throws database connection error
+     */
     private static Connection getConnection() throws Exception
     {
         try
@@ -19,7 +24,8 @@ public class Database {
             String url = "jdbc:mysql://localhost:3306/Database";
             String username = "root";
             String password = "root";
-            Connection conn = DriverManager.getConnection(url, username, password);
+            Connection conn = DriverManager.getConnection(url, username, 
+                    password);
             System.out.println("Connected");
             return conn;
         }
@@ -30,14 +36,20 @@ public class Database {
         return null;
     }
 
+    /**
+     * If there is no table within the database, it creates a new table
+     * @throws Exception throws creating database table error
+     */
     public static void createTable() throws Exception
     {
         try
         {
             Connection con = getConnection();
             PreparedStatement create = con.prepareStatement
-                ("CREATE TABLE IF NOT EXISTS dailySpending(id int NOT NULL AUTO_INCREMENT, day varchar(5), " +
-                        "month varchar(5), year varchar(5), amountSpent double, type varchar(255), PRIMARY KEY (id))");
+                ("CREATE TABLE IF NOT EXISTS dailySpending(id int NOT NULL "
+                        + "AUTO_INCREMENT, day varchar(5), month varchar(5), "
+                        + "year varchar(5), amountSpent double, "
+                        + "type varchar(255), PRIMARY KEY (id))");
             create.executeUpdate();
         }
         catch(Exception e)
@@ -46,13 +58,25 @@ public class Database {
         }
     }
 
-    public static void post(String day, String month, String year, double amountSpent, String type) throws Exception
+    /**
+     * Method that posts the data of an expenditure given a day, month, year,
+     * amount spent, and type of String
+     * @param day The given day
+     * @param month The given month
+     * @param year The given year
+     * @param amountSpent The amount spent
+     * @param type The type of expenditure
+     * @throws Exception Throws error collecting data from database
+     */
+    public static void post(String day, String month, String year, 
+            double amountSpent, String type) throws Exception
     {
         try
         {
             Connection con = getConnection();
             PreparedStatement post = con.prepareStatement
-                    ("INSERT INTO dailySpending(day, month, year, amountSpent, type) VALUES(?, ?, ?, ?, ?)");
+                    ("INSERT INTO dailySpending(day, month, year, amountSpent, "
+                            + "type) VALUES(?, ?, ?, ?, ?)");
             post.setString(1, day);
             post.setString(2, month);
             post.setString(3, year);
@@ -66,6 +90,11 @@ public class Database {
         }
     }
 
+    /**
+     * Gets all the rows of data from the database to create expenditure objects
+     * @return The ArrayList of Expenditures
+     * @throws Exception 
+     */
     public static ArrayList<Expenditures> createObjects() throws Exception
     {
         ArrayList<Expenditures> listOfSpending = new ArrayList<Expenditures>();
