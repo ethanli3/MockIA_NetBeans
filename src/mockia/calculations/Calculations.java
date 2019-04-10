@@ -24,7 +24,7 @@ public class Calculations
      * @param month The given month
      * @param year The given year
      * @param type The type of expenditure
-     * @return An int of the total spending of the given date and type
+     * @return A double of the total spending of the given date and type
      */
     public static double calculateDay
             (ArrayList<Expenditures> expenditures, String day, String month, 
@@ -66,12 +66,12 @@ public class Calculations
      * @param month The given month
      * @param year The given year
      * @param type The expenditure type
-     * @return An int of the total spending of the given date and type
+     * @return A double of the total spending of the given date and type
      */
-    public static int calculateMonth(ArrayList<Expenditures> expenditures, 
+    public static double calculateMonth(ArrayList<Expenditures> expenditures, 
             String month, String year, String type)
     {
-        int total = 0;
+        double total = 0;
         if (!type.equals("all"))
         {
             for(Expenditures e : expenditures)
@@ -103,17 +103,17 @@ public class Calculations
      * @param expenditures ArrayList of expenditures
      * @param year The given year
      * @param type The expenditure type
-     * @return An int of the total spending of the given date and type
+     * @return A double of the total spending of the given date and type
      */
-    public static int calculateYear(ArrayList<Expenditures> expenditures, 
+    public static double calculateYear(ArrayList<Expenditures> expenditures, 
             String year, String type)
     {
-        int total = 0;
+        double total = 0;
         if (!type.equals("all"))
         {
             for(Expenditures e : expenditures)
             {
-                if ( e.getYear().equals(year) && e.getType().equals(type))
+                if (e.getYear().equals(year) && e.getType().equals(type))
                 {
                     total += e.getValue();
                 }

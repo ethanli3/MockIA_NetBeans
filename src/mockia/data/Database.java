@@ -1,9 +1,7 @@
 package mockia.data;
 
 import mockia.expenditures.*;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,7 +18,7 @@ public class Database {
     {
         try
         {
-            String driver = "com.mysql.jdbc.Driver";
+            //The items needed to open and conncet to the MySQL database
             String url = "jdbc:mysql://localhost:3306/Database";
             String username = "root";
             String password = "root";
@@ -45,6 +43,7 @@ public class Database {
         try
         {
             Connection con = getConnection();
+            //Statment that creates the table in MySQL
             PreparedStatement create = con.prepareStatement
                 ("CREATE TABLE IF NOT EXISTS dailySpending(id int NOT NULL "
                         + "AUTO_INCREMENT, day varchar(5), month varchar(5), "
@@ -74,9 +73,12 @@ public class Database {
         try
         {
             Connection con = getConnection();
-            PreparedStatement post = con.prepareStatement
-                    ("INSERT INTO dailySpending(day, month, year, amountSpent, "
-                            + "type) VALUES(?, ?, ?, ?, ?)");
+            //Each "?" corresponds to the data type in the table from 
+            //dailySpending. For example the first "?" corresponds to the
+            //dailySpending(day)
+            PreparedStatement post = con.prepareStatement("INSERT INTO "
+                    + "dailySpending(day, month, year, amountSpent, type) "
+                    + "VALUES(?, ?, ?, ?, ?)");
             post.setString(1, day);
             post.setString(2, month);
             post.setString(3, year);
@@ -116,7 +118,7 @@ public class Database {
                                 result.getString("day"),
                                 result.getString("month"),
                                 result.getString("year"),
-                                result.getInt("amountSpent")) ;
+                                result.getDouble("amountSpent")) ;
                         listOfSpending.add(bills);
                         break;
                     case "Transport" :
@@ -125,7 +127,7 @@ public class Database {
                                 result.getString("day"),
                                 result.getString("month"),
                                 result.getString("year"),
-                                result.getInt("amountSpent"));
+                                result.getDouble("amountSpent"));
                         listOfSpending.add(transport);
                         break;
                     case "Lunch" :
@@ -134,7 +136,7 @@ public class Database {
                                 result.getString("day"),
                                 result.getString("month"),
                                 result.getString("year"),
-                                result.getInt("amountSpent"));
+                                result.getDouble("amountSpent"));
                         listOfSpending.add(lunch);
                         break;
                     case "Groceries" :
@@ -143,7 +145,7 @@ public class Database {
                                 result.getString("day"),
                                 result.getString("month"),
                                 result.getString("year"),
-                                result.getInt("amountSpent"));
+                                result.getDouble("amountSpent"));
                         listOfSpending.add(groceries);
                         break;
                     case "Occasional" :
@@ -152,7 +154,7 @@ public class Database {
                                 result.getString("day"),
                                 result.getString("month"),
                                 result.getString("year"),
-                                result.getInt("amountSpent"));
+                                result.getDouble("amountSpent"));
                         listOfSpending.add(occasionalExpenses);
                         break;
                     default:
@@ -161,7 +163,7 @@ public class Database {
                                 result.getString("day"),
                                 result.getString("month"),
                                 result.getString("year"),
-                                result.getInt("amountSpent"));
+                                result.getDouble("amountSpent"));
                         listOfSpending.add(de);
                 }
             }

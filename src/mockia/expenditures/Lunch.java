@@ -9,7 +9,8 @@ package mockia.expenditures;
  *
  * @author ethanli
  */
-public class Lunch extends Expenditures{
+public class Lunch extends Expenditures
+{
 
     /**
      * Initialization constructor that passes all the methods to parent class

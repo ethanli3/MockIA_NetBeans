@@ -8,6 +8,7 @@ package mockia;
 import mockia.calculations.Calculations;
 import mockia.data.Database;
 import gui.*;
+import mockia.exchangeRates.ExchangeRates;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 /**
@@ -23,6 +24,5 @@ public class MockIA {
     {
         Database.createTable();
         guiFrame.main(null);
-      
     }
 }

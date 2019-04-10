@@ -9,7 +9,8 @@ package mockia.expenditures;
  *
  * @author ethanli
  */
-public class Transport extends Expenditures {
+public class Transport extends Expenditures
+{
 
     /**
      * Initialization constructor that passes all the methods to parent class

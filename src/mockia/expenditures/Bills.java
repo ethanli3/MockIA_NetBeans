@@ -10,7 +10,8 @@ package mockia.expenditures;
  * @author ethanli
  */
 
-public class Bills extends Expenditures {
+public class Bills extends Expenditures 
+{
 
     /**
      * Initialization constructor that passes all the methods to parent class
