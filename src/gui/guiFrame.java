@@ -7,14 +7,11 @@ package gui;
 
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
-import java.util.Date;
 import mockia.calculations.Calculations;
 import mockia.data.*;
+import mockia.exchangeRates.ExchangeRates;
 import mockia.expenditures.*;
 
 /**
@@ -24,15 +21,22 @@ import mockia.expenditures.*;
 public class guiFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form guiFrame
+     * Creates new form guiFrame by initializing all components, creating date
+     * format the user sees, and updating the all the text fields with data
+     * from the database (Previous data inputted)
      */
-    public guiFrame() 
+    public guiFrame()
     {
-        initComponents();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/mm/dd");
-        LocalDate localDate = LocalDate.now();
-        String date = localDate.toString();
-        this.date.setText(date);
+        try
+        {
+            initComponents();
+            LocalDate localDate = LocalDate.now();
+            String date = localDate.toString();
+            this.date.setText(date);
+            updateTextFields(Database.createObjects());
+        }
+        catch (Exception e)
+        {}
     }
 
     /**
@@ -116,6 +120,8 @@ public class guiFrame extends javax.swing.JFrame {
         yTransport = new javax.swing.JLabel();
         yLunch1 = new javax.swing.JLabel();
         yTotal = new javax.swing.JLabel();
+        HKDText = new javax.swing.JLabel();
+        selectCurrency = new javax.swing.JComboBox<>();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -162,7 +168,7 @@ public class guiFrame extends javax.swing.JFrame {
 
         tTransport.setText("Transport ");
 
-        tLunch.setText("Lunch ");
+        tLunch.setText("Lunch (Meals)");
 
         tGroceries.setText("Groceries ");
 
@@ -180,7 +186,7 @@ public class guiFrame extends javax.swing.JFrame {
 
         mTransport.setText("Transport");
 
-        mLunch.setText("Lunch");
+        mLunch.setText("Lunch (Meals)");
 
         inputSpending.setText("Input Spending");
 
@@ -324,7 +330,7 @@ public class guiFrame extends javax.swing.JFrame {
 
         yTransport.setText("Transport ");
 
-        yLunch1.setText("Lunch ");
+        yLunch1.setText("Lunch (Meals)");
 
         yTotal.setText("Total");
 
@@ -382,6 +388,10 @@ public class guiFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        HKDText.setText("HKD($)");
+
+        selectCurrency.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HKD($)", "USD($)" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -390,38 +400,8 @@ public class guiFrame extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(spendingDate)
-                                .addGap(18, 18, 18)
-                                .addComponent(spendingDayBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(spendingMonthBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(todaysDate)
-                                .addGap(24, 24, 24)
-                                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(inputSpending)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(inputSpendingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(spendingType)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(spendingBox, 0, 133, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(day)
-                                        .addGap(44, 44, 44)
-                                        .addComponent(month)))))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(submit)
-                            .addComponent(spendingYearBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(year))))
+                        .addComponent(HKDText)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(todaysSpending)
@@ -451,21 +431,61 @@ public class guiFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(yearsSpending)
-                            .addComponent(tSpendingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(24, 24, 24))
+                            .addComponent(tSpendingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(spendingDate)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(spendingDayBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(spendingMonthBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(todaysDate)
+                                        .addGap(24, 24, 24)
+                                        .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(spendingYearBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(year))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(inputSpending)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(inputSpendingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(selectCurrency, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(spendingType)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(spendingBox, 0, 133, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(day)
+                                        .addGap(44, 44, 44)
+                                        .addComponent(month)))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(submit)
+                .addGap(42, 42, 42))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(HKDText)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(todaysSpending)
-                            .addComponent(monthsSpending)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(yearsSpending)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(todaysSpending)
+                        .addComponent(monthsSpending))
+                    .addComponent(yearsSpending, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -500,15 +520,16 @@ public class guiFrame extends javax.swing.JFrame {
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tSpendingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(tSpendingPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(inputSpending)
-                    .addComponent(inputSpendingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inputSpendingTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(spendingType)
                     .addComponent(spendingBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(day)
                     .addComponent(month)
@@ -523,16 +544,16 @@ public class guiFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(todaysDate)
                     .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(submit)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Updates all the text fields 
+     * Updates all the text fields shown on the GUI
      * @param expenditures ArrayList of expenditures
      */
     private void updateTextFields(ArrayList<Expenditures> expenditures)
@@ -550,76 +571,76 @@ public class guiFrame extends javax.swing.JFrame {
             String day = date.substring(8, 10);
 
             double dayBills = Calculations.calculateDay(expenditures, day, month, year, "Bills");
-            Double dBills = new Double(dayBills);
-            tBillsT.setText(dBills.toString());
+            String dBills = String.format("%.2f", dayBills);
+            tBillsT.setText(dBills);
 
             double dayTransport = Calculations.calculateDay(expenditures, day, month, year, "Transport");
-            Double dTransport = new Double(dayTransport);
-            tTransportT.setText(dTransport.toString());
+            String dTransport = String.format("%.2f", dayTransport);
+            tTransportT.setText(dTransport);
 
             double dayLunch = Calculations.calculateDay(expenditures, day, month, year, "Lunch");
-            Double dLunch = new Double(dayLunch);
-            tLunchT.setText(dLunch.toString());
+            String dLunch = String.format("%.2f", dayLunch);
+            tLunchT.setText(dLunch);
 
             double dayGroceries = Calculations.calculateDay(expenditures, day, month, year, "Groceries");
-            Double dGroceries = new Double(dayGroceries);
-            tGroceriesT.setText(dGroceries.toString());
+            String dGroceries = String.format("%.2f", dayGroceries);
+            tGroceriesT.setText(dGroceries);
 
             double dayOccasional = Calculations.calculateDay(expenditures, day, month, year, "Occasional");
-            Double dOccasional = new Double(dayOccasional);
-            tOccasionalT.setText(dOccasional.toString());
+            String dOccasional = String.format("%.2f", dayOccasional);
+            tOccasionalT.setText(dOccasional);
 
             double dayAll = Calculations.calculateDay(expenditures, day, month, year, "all");
-            Double dAll = new Double(dayAll);
-            tTotalT.setText(dAll.toString());
+            String dAll = String.format("%.2f", dayAll);
+            tTotalT.setText(dAll);
             
             double monthBills = Calculations.calculateMonth(expenditures, month, year, "Bills");
-            Double mBills = new Double(monthBills);
-            mBillsT.setText(mBills.toString());
+            String mBills = String.format("%.2f", monthBills);
+            mBillsT.setText(mBills);
             
             double monthTransport = Calculations.calculateMonth(expenditures, month, year, "Transport");
-            Double mTransport = new Double(monthTransport);
-            mTransportT.setText(mTransport.toString()); 
+            String mTransport = String.format("%.2f", monthTransport);
+            mTransportT.setText(mTransport); 
             
             double monthLunch = Calculations.calculateMonth(expenditures, month, year, "Lunch");
-            Double mLunch = new Double(monthLunch);
-            mLunchT.setText(mLunch.toString()); 
+            String mLunch = String.format("%.2f", monthLunch);
+            mLunchT.setText(mLunch); 
             
             double monthGroceries = Calculations.calculateMonth(expenditures, month, year, "Groceries");
-            Double mGroceries = new Double(monthGroceries);
-            mGroceriesT.setText(mGroceries.toString()); 
+            String mGroceries = String.format("%.2f", monthGroceries);
+            mGroceriesT.setText(mGroceries); 
             
             double monthOccasional = Calculations.calculateMonth(expenditures, month, year, "Occasional");
-            Double mOccasional = new Double(monthOccasional);
-            mOccasionalT.setText(mOccasional.toString()); 
+            String mOccasional = String.format("%.2f", monthOccasional);
+            mOccasionalT.setText(mOccasional); 
             
             double monthAll = Calculations.calculateMonth(expenditures, month, year, "all");
-            Double mAll = new Double(monthAll);
-            mTotalT.setText(mAll.toString()); 
+            String mAll = String.format("%.2f", monthAll);
+            mTotalT.setText(mAll); 
             
             double yearBills = Calculations.calculateYear(expenditures, year, "Bills");
-            Double yBills = new Double(yearBills);
-            yBillsT.setText(yBills.toString());
+            String yBills = String.format("%.2f", yearBills);
+            yBillsT.setText(yBills);
             
             double yearTransport = Calculations.calculateYear(expenditures, year, "Transport");
-            Double yTransport = new Double(yearTransport);
-            yTransportT.setText(yTransport.toString());
+            String yTransport = String.format("%.2f", yearTransport);
+            yTransportT.setText(yTransport);
             
             double yearLunch = Calculations.calculateYear(expenditures, year, "Lunch");
-            Double yLunch = new Double(yearLunch);
-            yLunchT.setText(yLunch.toString());
+            String yLunch = String.format("%.2f", yearLunch);
+            yLunchT.setText(yLunch);
             
             double yearGroceries = Calculations.calculateYear(expenditures, year, "Groceries");
-            Double yGroceries = new Double(yearGroceries);
-            yGroceriesT.setText(yGroceries.toString());
+            String yGroceries = String.format("%.2f", yearGroceries);
+            yGroceriesT.setText(yGroceries);
             
             double yearOccasional = Calculations.calculateYear(expenditures, year, "Occasional");
-            Double yOccasional = new Double(yearOccasional);
-            yOccasionalT.setText(yOccasional.toString());
+            String yOccasional = String.format("%.2f", yearOccasional);
+            yOccasionalT.setText(yOccasional);
             
             double yearTotal = Calculations.calculateYear(expenditures, year, "all");
-            Double yTotal = new Double(yearTotal);
-            yTotalT.setText(yTotal.toString());   
+            String yTotal = String.format("%.2f", yearTotal);
+            yTotalT.setText(yTotal);   
         }
         catch (Exception e)
         {
@@ -627,8 +648,9 @@ public class guiFrame extends javax.swing.JFrame {
     }
     
     /**
-     * Updates all the GUI when the submit button is pressed using all the info
-     * on the GUI
+     * Updates all the java objects when the submit button is pressed by using 
+     * all the info on the GUI
+     * The data is then updated by calling updateTextFields
      * @param evt When the submit button is pressed
      */
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
@@ -648,6 +670,12 @@ public class guiFrame extends javax.swing.JFrame {
             
             double spending = 
                     Double.parseDouble(inputSpendingTextField.getText());
+            
+            if (selectCurrency.getSelectedItem().toString().equals("USD($)"))
+            {
+               spending = ExchangeRates.convert(spending);
+            }
+            
             String type = spendingBox.getSelectedItem().toString();
             
             if (spendingDayBox.getSelectedItem().toString().equals("Today"))
@@ -714,7 +742,7 @@ public class guiFrame extends javax.swing.JFrame {
             {
                 year = spendingYearBox.getSelectedItem().toString();
             }
-            
+           
             Database.post(day, month, year, spending, type);
             ArrayList<Expenditures> expenditures = Database.createObjects();
             updateTextFields(expenditures);
@@ -731,7 +759,8 @@ public class guiFrame extends javax.swing.JFrame {
      * GUI Main
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) 
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -757,13 +786,15 @@ public class guiFrame extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            public void run() 
+            {
                 new guiFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel HKDText;
     private javax.swing.JTextField date;
     private javax.swing.JLabel day;
     private javax.swing.JLabel inputSpending;
@@ -799,6 +830,7 @@ public class guiFrame extends javax.swing.JFrame {
     private javax.swing.JTextField mTransportT;
     private javax.swing.JLabel month;
     private javax.swing.JLabel monthsSpending;
+    private javax.swing.JComboBox<String> selectCurrency;
     private javax.swing.JComboBox<String> spendingBox;
     private javax.swing.JLabel spendingDate;
     private javax.swing.JComboBox<String> spendingDayBox;
