@@ -21,7 +21,8 @@ public class Lunch extends Expenditures
      * @param year Given Year
      * @param value Given Value
      */
-    public Lunch(String type, String day, String month, String year, double value)
+    public Lunch
+        (String type, String day, String month, String year,  double value)
     {
         super(type, day, month, year, value);
     }

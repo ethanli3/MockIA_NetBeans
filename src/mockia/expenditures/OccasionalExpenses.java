@@ -21,7 +21,8 @@ public class OccasionalExpenses extends Expenditures
      * @param year Given Year
      * @param value Given Value
      */
-    public OccasionalExpenses(String type, String day, String month, String year, double value)
+    public OccasionalExpenses
+        (String type, String day, String month, String year, double value)
     {
         super(type, day, month, year, value);
     }

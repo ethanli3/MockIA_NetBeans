@@ -560,9 +560,7 @@ public class guiFrame extends javax.swing.JFrame {
     {
         try
         {
-            //Date Format From 
-            //https://www.mkyong.com/java/java-how-to-get-current-date-time-date-and-calender/
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/mm/dd");
+            //Date Format From (From Mkyong)
             LocalDate localDate = LocalDate.now();
             String date = localDate.toString();
             System.out.println(date);
@@ -570,75 +568,96 @@ public class guiFrame extends javax.swing.JFrame {
             String month = date.substring(5, 7);
             String day = date.substring(8, 10);
 
-            double dayBills = Calculations.calculateDay(expenditures, day, month, year, "Bills");
+            //Update 1st Column
+            double dayBills = Calculations.calculateDay(expenditures, 
+                    day, month, year, "Bills");
             String dBills = String.format("%.2f", dayBills);
             tBillsT.setText(dBills);
 
-            double dayTransport = Calculations.calculateDay(expenditures, day, month, year, "Transport");
+            double dayTransport = Calculations.calculateDay(expenditures, 
+                    day, month, year, "Transport");
             String dTransport = String.format("%.2f", dayTransport);
             tTransportT.setText(dTransport);
 
-            double dayLunch = Calculations.calculateDay(expenditures, day, month, year, "Lunch");
+            double dayLunch = Calculations.calculateDay(expenditures, 
+                    day, month, year, "Lunch");
             String dLunch = String.format("%.2f", dayLunch);
             tLunchT.setText(dLunch);
 
-            double dayGroceries = Calculations.calculateDay(expenditures, day, month, year, "Groceries");
+            double dayGroceries = Calculations.calculateDay(expenditures, 
+                    day, month, year, "Groceries");
             String dGroceries = String.format("%.2f", dayGroceries);
             tGroceriesT.setText(dGroceries);
 
-            double dayOccasional = Calculations.calculateDay(expenditures, day, month, year, "Occasional");
+            double dayOccasional = Calculations.calculateDay(expenditures, 
+                    day, month, year, "Occasional");
             String dOccasional = String.format("%.2f", dayOccasional);
             tOccasionalT.setText(dOccasional);
 
-            double dayAll = Calculations.calculateDay(expenditures, day, month, year, "all");
+            double dayAll = Calculations.calculateDay(expenditures, 
+                    day, month, year, "all");
             String dAll = String.format("%.2f", dayAll);
             tTotalT.setText(dAll);
             
-            double monthBills = Calculations.calculateMonth(expenditures, month, year, "Bills");
+            //Update 2nd Column
+            double monthBills = Calculations.calculateMonth(expenditures, 
+                    month, year, "Bills");
             String mBills = String.format("%.2f", monthBills);
             mBillsT.setText(mBills);
             
-            double monthTransport = Calculations.calculateMonth(expenditures, month, year, "Transport");
+            double monthTransport = Calculations.calculateMonth(expenditures, 
+                    month, year, "Transport");
             String mTransport = String.format("%.2f", monthTransport);
             mTransportT.setText(mTransport); 
             
-            double monthLunch = Calculations.calculateMonth(expenditures, month, year, "Lunch");
+            double monthLunch = Calculations.calculateMonth(expenditures, 
+                    month, year, "Lunch");
             String mLunch = String.format("%.2f", monthLunch);
             mLunchT.setText(mLunch); 
             
-            double monthGroceries = Calculations.calculateMonth(expenditures, month, year, "Groceries");
+            double monthGroceries = Calculations.calculateMonth(expenditures, 
+                    month, year, "Groceries");
             String mGroceries = String.format("%.2f", monthGroceries);
             mGroceriesT.setText(mGroceries); 
             
-            double monthOccasional = Calculations.calculateMonth(expenditures, month, year, "Occasional");
+            double monthOccasional = Calculations.calculateMonth(expenditures, 
+                    month, year, "Occasional");
             String mOccasional = String.format("%.2f", monthOccasional);
             mOccasionalT.setText(mOccasional); 
             
-            double monthAll = Calculations.calculateMonth(expenditures, month, year, "all");
+            double monthAll = Calculations.calculateMonth(expenditures, 
+                    month, year, "all");
             String mAll = String.format("%.2f", monthAll);
             mTotalT.setText(mAll); 
             
-            double yearBills = Calculations.calculateYear(expenditures, year, "Bills");
+            //Update 3rd Column
+            double yearBills = Calculations.calculateYear(expenditures, 
+                    year, "Bills");
             String yBills = String.format("%.2f", yearBills);
             yBillsT.setText(yBills);
             
-            double yearTransport = Calculations.calculateYear(expenditures, year, "Transport");
+            double yearTransport = Calculations.calculateYear(expenditures, 
+                    year, "Transport");
             String yTransport = String.format("%.2f", yearTransport);
             yTransportT.setText(yTransport);
             
-            double yearLunch = Calculations.calculateYear(expenditures, year, "Lunch");
+            double yearLunch = Calculations.calculateYear(expenditures, 
+                    year, "Lunch");
             String yLunch = String.format("%.2f", yearLunch);
             yLunchT.setText(yLunch);
             
-            double yearGroceries = Calculations.calculateYear(expenditures, year, "Groceries");
+            double yearGroceries = Calculations.calculateYear(expenditures, 
+                    year, "Groceries");
             String yGroceries = String.format("%.2f", yearGroceries);
             yGroceriesT.setText(yGroceries);
             
-            double yearOccasional = Calculations.calculateYear(expenditures, year, "Occasional");
+            double yearOccasional = Calculations.calculateYear(expenditures, 
+                    year, "Occasional");
             String yOccasional = String.format("%.2f", yearOccasional);
             yOccasionalT.setText(yOccasional);
             
-            double yearTotal = Calculations.calculateYear(expenditures, year, "all");
+            double yearTotal = Calculations.calculateYear(expenditures, 
+                    year, "all");
             String yTotal = String.format("%.2f", yearTotal);
             yTotalT.setText(yTotal);   
         }
@@ -668,9 +687,10 @@ public class guiFrame extends javax.swing.JFrame {
             String month = "";
             String year = "";
             
+            //User's input under spending type
             double spending = 
                     Double.parseDouble(inputSpendingTextField.getText());
-            
+
             if (selectCurrency.getSelectedItem().toString().equals("USD($)"))
             {
                spending = ExchangeRates.convert(spending);
@@ -742,7 +762,9 @@ public class guiFrame extends javax.swing.JFrame {
             {
                 year = spendingYearBox.getSelectedItem().toString();
             }
-           
+            
+            //Posts the users input to database (Sent to database class, method
+            //post)
             Database.post(day, month, year, spending, type);
             ArrayList<Expenditures> expenditures = Database.createObjects();
             updateTextFields(expenditures);
@@ -750,6 +772,8 @@ public class guiFrame extends javax.swing.JFrame {
         }
         catch (Exception e)
         {
+            //Error message when user inputs invalid inputs into the "Spending
+            //Input" text box
             JOptionPane.showMessageDialog(this, "Please Enter a Valid Number", 
                     "ERROR", JOptionPane.ERROR_MESSAGE);
         }

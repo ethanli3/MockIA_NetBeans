@@ -31,6 +31,14 @@ public class Calculations
                     String year, String type)
     {
         double total = 0;
+        //Checks if the type is NOT equal to all
+        //True - Runs a for loop that checks for all the expenditure objects
+        //within the ArrayList expenditures with the specificied date AND TYPE
+        //and adds up the total values of the objects.
+        //
+        //False - Runs a for loop that checks for all the expenditure objects
+        //within the ArrayList expenditures with the specificied date and adds
+        //up the total values of the objects. 
         if (!type.equals("all"))
         {
             for(Expenditures e : expenditures)
@@ -72,6 +80,14 @@ public class Calculations
             String month, String year, String type)
     {
         double total = 0;
+        //Checks if the type is NOT equal to all
+        //True - Runs a for loop that checks for all the expenditure objects
+        //within the ArrayList expenditures with the specificied month AND TYPE
+        //and adds up the total values of the objects.
+        //
+        //False - Runs a for loop that checks for all the expenditure objects
+        //within the ArrayList expenditures with the specificied month and adds
+        //up the total values of the objects. 
         if (!type.equals("all"))
         {
             for(Expenditures e : expenditures)
@@ -109,6 +125,14 @@ public class Calculations
             String year, String type)
     {
         double total = 0;
+        //Checks if the type is NOT equal to all
+        //True - Runs a for loop that checks for all the expenditure objects
+        //within the ArrayList expenditures with the specificied year AND TYPE
+        //and adds up the total values of the objects.
+        //
+        //False - Runs a for loop that checks for all the expenditure objects
+        //within the ArrayList expenditures with the specificied year and adds
+        //up the total values of the objects. 
         if (!type.equals("all"))
         {
             for(Expenditures e : expenditures)

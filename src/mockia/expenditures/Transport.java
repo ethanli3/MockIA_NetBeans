@@ -21,7 +21,8 @@ public class Transport extends Expenditures
      * @param year Given Year
      * @param value Given Value
      */
-    public Transport(String type, String day, String month, String year, double value)
+    public Transport
+        (String type, String day, String month, String year, double value)
     {
         super(type, day, month, year, value);
     }

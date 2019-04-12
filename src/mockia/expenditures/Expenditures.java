@@ -110,7 +110,7 @@ public abstract class Expenditures
     }
 
     /**
-     * Acessor method for the year
+     * Accessor method for the year
      * @return String year
      */
     public String getYear()
@@ -119,7 +119,7 @@ public abstract class Expenditures
     }
 
     /**
-     * Acessor method for the expenditure amount
+     * Accessor method for the expenditure amount
      * @return Double value
      */
     public double getValue()

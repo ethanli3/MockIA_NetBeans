@@ -104,10 +104,13 @@ public class Database {
         {
             Connection con = getConnection();
             PreparedStatement get = con.prepareStatement
-                    ("SELECT day, month, year, type, amountSpent FROM dailySpending");
+                    ("SELECT day, month, year, type, amountSpent "
+                            + "FROM dailySpending");
 
             ResultSet result = get.executeQuery();
-
+            
+            //The loop will continue to run until there are no more rows in the
+            //database that contain data
             while (result.next())
             {
                 switch (result.getString("type"))

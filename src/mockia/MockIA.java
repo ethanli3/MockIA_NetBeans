@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class MockIA {
 
     /**
+     * Main method that starts the entire program.
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception 

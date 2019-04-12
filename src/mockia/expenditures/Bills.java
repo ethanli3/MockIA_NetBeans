@@ -22,7 +22,8 @@ public class Bills extends Expenditures
      * @param year Given Year
      * @param value Given Value
      */
-    public Bills(String type, String day, String month, String year, double value)
+    public Bills
+        (String type, String day, String month, String year, double value)
     {
         super(type, day, month, year, value);
     }
